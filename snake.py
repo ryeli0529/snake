@@ -1,28 +1,44 @@
-import string
-import math
-import random
-import os
+import string, random, os, time, msvcrt
 
 os.system('cls')
+
+def typeinput(default = " ", timeout = 0.3):
+    start_time = time.time()
+    input = ''
+    while True:
+        if msvcrt.kbhit():
+            byte_arr = msvcrt.getche()
+            if ord(byte_arr) == 13:
+                break
+            elif ord(byte_arr) >= 32:
+                input += "".join(map(chr,byte_arr))
+        if (time.time() - start_time) > timeout:
+            break
+    print('')
+    if len(input) > 0:
+        return input
+    else:
+        return default
+
 def colandrow():
     dig = string.digits
     while True:
-        no = 1
+        no = 0
         col = input("select amount of columns (min 6)\n").strip()
         for i in col:
-            if i.isdigit():
-                no = 0
+            if i.isdigit() == False:
+                no = 1
         if no != 1:
             break
     col = int(col)
     if col < 6:
         col = 6
     while True:
-        no = 1
+        no = 0
         row = input("select amount of rows (min 6)\n").strip()
         for i in row:
-            if i.isdigit():
-                no = 0
+            if i.isdigit() == False:
+                no = 1
         if no != 1:
             break
     row = int(row)
@@ -79,7 +95,7 @@ while True:
                 print("")
     while True:
         new = 0
-        move = input().strip().lower()
+        move = typeinput().strip().lower()
         os.system('cls')
         if move == "w" and s == 0:
             w = 1
@@ -93,7 +109,6 @@ while True:
         if move == "d" and a == 0:
             d = 1
             w, s = 0, 0
-        print(w, a, s, d, snake, snakekeys)
         if w == 1:
             board[f"r{wherer - 1}"][wherec] = 1
             if (wherer - 1 == wfoodr) and (wherec == wfoodc):
@@ -216,7 +231,6 @@ while True:
                 if board[f"r{wfoodr}"][wfoodc] == 0:
                     board[f"r{wfoodr}"][wfoodc] = -1
                     break
-        print(w, a, s, d, snake, snakekeys)
         for i in board:
             for sp in board[i]:
                 if sp == 0:
